@@ -12,7 +12,6 @@ build_style=gnu-configure
                 --without-gconf \
                 --without-sound \
                 --without-compress-install \
-                --without-toolkit-scroll-bars \
                 --with-native-compilation=aot \
                 --with-tree-sitter \
                 --with-file-notification=inotify \
