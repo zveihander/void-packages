@@ -1,0 +1,72 @@
+# Template file for 'emacs-pgtk'
+pkgname=emacs-pgtk
+version=30.2
+revision=1
+build_style=gnu-configure
+ configure_args="--with-pgtk \
+                --without-x \
+                --without-dbus \
+                --without-gpm \
+                --without-dbus \
+                --without-gsettings \
+                --without-gconf \
+                --without-sound \
+                --without-compress-install \
+                --without-toolkit-scroll-bars \
+                --with-native-compilation=aot \
+                --with-tree-sitter \
+                --with-file-notification=inotify \
+                --with-harfbuzz \
+                --with-cairo \
+                --with-json \
+                --with-gnutls \
+                --with-sqlite3 \
+                --with-modules \
+                --with-webp \
+                --with-jpeg \
+                --with-png \
+                --with-rsvg"
+
+hostmakedepends="pkg-config tar texinfo"
+makedepends="ncurses-devel gtk+3-devel acl-devel gnutls-devel
+ libxml2-devel libgccjit-devel harfbuzz-devel cairo-devel
+ gmp-devel tree-sitter-devel sqlite-devel libwebp-devel
+ libjpeg-turbo-devel tiff-devel giflib-devel libpng-devel
+ libXpm-devel librsvg-devel libmagick-devel"
+depends="desktop-file-utils hicolor-icon-theme"
+
+short_desc="GNU Emacs editor - modified by zveihander"
+maintainer="Evan Alvarez <lwq7e50ygv8f1w@tuta.com>"
+license="GPL-3.0-or-later"
+homepage="http://www.gnu.org/software/emacs/"
+distfiles="${GNU_SITE}/emacs/emacs-${version}.tar.xz"
+checksum=b3f36f18a6dd2715713370166257de2fae01f9d38cfe878ced9b1e6ded5befd9
+
+export CFLAGS="-O2 -pipe -march=native -flto=auto -fstack-protector-strong -fstack-clash-protection -D_FORTIFY_SOURCE=3"
+export LDFLAGS="-Wl,-z,relro -Wl,-z,now -flto=auto"
+export EXTRA_MESON_ARGS="-Dgtk_doc=disabled -Ddocs=disabled"
+
+case "$XBPS_TARGET_MACHINE" in
+    x86_64*) CFLAGS+=" -fcf-protection" ;;
+    aarch64*) CFLAGS+=" -mbranch-protection=standard" ;;
+esac
+
+nocross=yes
+
+do_configure() {
+    ./configure ${configure_args}
+}
+
+do_build() {
+    make ${makejobs}
+}
+
+do_install() {
+    make DESTDIR=$DESTDIR install
+
+    rm -f ${DESTDIR}/usr/bin/ctags
+    rm -f ${DESTDIR}/usr/share/man/man1/ctags.1*
+
+    rm -rf ${DESTDIR}/usr/lib/systemd
+    rm -f ${DESTDIR}/usr/share/info/dir
+}

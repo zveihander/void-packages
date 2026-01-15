@@ -130,15 +130,15 @@ emacs-gtk3_package() {
 	}
 }
 
-emacs-pgtk_package() {
-	depends="emacs-common-${version}_${revision} desktop-file-utils hicolor-icon-theme"
-	provides="emacs-${version}_${revision}"
-	replaces="emacs>=0"
-	short_desc+=" - Pure GTK version"
-	pkg_install() {
-		make DESTDIR=${PKGDESTDIR} -C ${wrksrc}/pgtk install
-		rm -f ${PKGDESTDIR}/usr/bin/ctags
-		rm -rf ${PKGDESTDIR}/usr/share/{emacs,man,info}
-		rm -rf ${PKGDESTDIR}/usr/lib/systemd
-	}
-}
+#emacs-pgtk_package() {
+#	depends="emacs-common-${version}_${revision} desktop-file-utils hicolor-icon-theme"
+#	provides="emacs-${version}_${revision}"
+#	replaces="emacs>=0"
+#	short_desc+=" - Pure GTK version"
+#	pkg_install() {
+#		make DESTDIR=${PKGDESTDIR} -C ${wrksrc}/pgtk install
+#		rm -f ${PKGDESTDIR}/usr/bin/ctags
+#		rm -rf ${PKGDESTDIR}/usr/share/{emacs,man,info}
+#		rm -rf ${PKGDESTDIR}/usr/lib/systemd
+#	}
+#}
