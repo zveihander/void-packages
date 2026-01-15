@@ -1,0 +1,5 @@
+# aarch64 (16kb page size)
+export XBPS_LTO_STYLE=full
+XBPS_CFLAGS="-O3 -mcpu=native -march=native -fno-plt -pipe -D_FORTIFY_SOURCE=3 -fstack-protector-strong -mbranch-protection=standard -flto=auto"
+XBPS_CXXFLAGS="${XBPS_CFLAGS}"
+XBPS_LDFLAGS="-Wl,-z,relro,-z,now -Wl,--gc-sections -Wl,--as-needed -Wl,-z,max-page-size=16384 -flto=auto"

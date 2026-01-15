@@ -41,14 +41,7 @@ homepage="http://www.gnu.org/software/emacs/"
 distfiles="${GNU_SITE}/emacs/emacs-${version}.tar.xz"
 checksum=b3f36f18a6dd2715713370166257de2fae01f9d38cfe878ced9b1e6ded5befd9
 
-export CFLAGS="-O3 -pipe -mcpu=native -flto=auto -fno-plt -fstack-protector-strong -fstack-clash-protection -D_FORTIFY_SOURCE=3"
-export LDFLAGS="-Wl,-z,relro -Wl,-z,now -Wl,-z,max-page-size=16384 -flto=auto"
 export EXTRA_MESON_ARGS="-Dgtk_doc=disabled -Ddocs=disabled"
-
-case "$XBPS_TARGET_MACHINE" in
-    x86_64*) CFLAGS+=" -fcf-protection" ;;
-    aarch64*) CFLAGS+=" -mbranch-protection=standard" ;;
-esac
 
 nocross=yes
 
