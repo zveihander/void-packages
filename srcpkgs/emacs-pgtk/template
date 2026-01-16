@@ -34,7 +34,7 @@ makedepends="ncurses-devel gtk+3-devel acl-devel gnutls-devel
  librsvg-devel"
 depends="desktop-file-utils hicolor-icon-theme"
 
-short_desc="GNU Emacs editor - modified by zveihander"
+short_desc="GNU Emacs editor - modified by zveihander for aarch64-musl (asahi)"
 maintainer="Evan Alvarez <lwq7e50ygv8f1w@tuta.com>"
 license="GPL-3.0-or-later"
 homepage="http://www.gnu.org/software/emacs/"

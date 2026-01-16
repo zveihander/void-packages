@@ -1,0 +1,2 @@
+ac_add_options --disable-debug-symbols
+ac_add_options --disable-debug
