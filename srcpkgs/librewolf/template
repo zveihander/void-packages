@@ -20,8 +20,8 @@ hostmakedepends="unzip zip pkg-config perl python3 yasm rust
  tar xz $(vopt_if pgo 'dbus mesa-dri vulkan-loader pciutils')
  $(vopt_if wasi wasi-sdk)"
 makedepends="nss-devel libjpeg-turbo-devel gtk+3-devel
- pixman-devel libevent-devel libnotify-devel libvpx-devel libwebp-devel
- rust-std freetype-devel pipewire-devel libicu-devel $(vopt_if wasi wasi-sdk) $(vopt_if dbus dbus-devel)"
+ pixman-devel libevent-devel libnotify-devel libvpx-devel libwebp-devel libsodium-devel
+ rust-std freetype-devel pipewire-devel libicu78-devel $(vopt_if wasi wasi-sdk) $(vopt_if dbus dbus-devel)"
 depends="nss>=3.72 nspr>=4.32 desktop-file-utils hicolor-icon-theme pciutils"
 
 build_options="dbus pulseaudio wayland lto pgo clang wasi"
@@ -139,27 +139,14 @@ do_build() {
       echo "ac_add_options --disable-alsa"
 	  echo "ac_add_options --disable-jack"
 	  echo "ac_add_options --disable-sndio"
-	  echo "ac_add_options --disable-xscreensaver"
       echo "ac_add_options --disable-webspeech"
-      echo "ac_add_options --disable-gamepad"
-
-      # telemetry
-      echo "ac_add_options --disable-telemetry"
-      echo "ac_add_options --disable-glean"
-      echo "ac_add_options --disable-normandy"
-      echo "ac_add_options --disable-healthreport"
-      echo "ac_add_options --disable-crashreporter"
-      echo "ac_add_options --disable-updater"
-      echo "ac_add_options --disable-pioneer"
 
       # bloat
       echo "ac_add_options --disable-tests"
       echo "ac_add_options --disable-debug"
-      echo "ac_add_options --disable-pocket"
       echo "ac_add_options --disable-parental-controls"
       echo "ac_add_options --disable-accessibility"
       echo "ac_add_options --disable-vtune"
-      echo "ac_add_options --disable-google-sse"
     }
 
 	cat <<-! >mozconfig
@@ -214,7 +201,6 @@ do_build() {
 	ac_add_options --disable-audio-backends
 	ac_add_options $(vopt_enable pulseaudio)
 	ac_add_options --enable-default-toolkit=cairo-gtk3-wayland-only
-    ac_add_options --disable-x11
 
 	mk_add_options MOZ_OBJDIR="${wrksrc}/obj"
 
