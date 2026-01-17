@@ -4,27 +4,26 @@ pkgname=ffmpeg6
 version=6.1.3
 revision=4
 hostmakedepends="pkg-config perl"
-makedepends="zlib-devel bzip2-devel freetype-devel alsa-lib-devel libXfixes-devel
- libXext-devel libXvMC-devel libxcb-devel lame-devel libtheora-devel
- libvorbis-devel x264-devel xvidcore-devel jack-devel SDL2-devel libsoxr-devel
- libcdio-paranoia-devel librtmp-devel libopenmpt-devel gnutls-devel
- speex-devel celt-devel harfbuzz-devel libass-devel opus-devel ocl-icd-devel
- libbs2b-devel libvidstab-devel vmaf-devel libbluray-devel pulseaudio-devel
+makedepends="zlib-devel bzip2-devel freetype-devel alsa-lib-devel
+ lame-devel libtheora-devel
+ libvorbis-devel x264-devel xvidcore-devel SDL2-devel libsoxr-devel
+ libcdio-paranoia-devel gnutls-devel
+ harfbuzz-devel libass-devel opus-devel ocl-icd-devel
+ libbluray-devel pulseaudio-devel
  x265-devel v4l-utils-devel libvpx-devel libaom-devel libdav1d-devel
- libwebp-devel libdrm-devel srt-devel librist-devel vulkan-loader-devel
+ libwebp-devel libdrm-devel vulkan-loader-devel
  zimg-devel libmysofa-devel libsvt-av1-devel $(vopt_if vaapi libva-devel)
- $(vopt_if vdpau libvdpau-devel) $(vopt_if fdk_aac fdk-aac-devel)
- $(vopt_if libvpl libvpl-devel) $(vopt_if nvcodec nv-codec-headers)"
+ $(vopt_if fdk_aac fdk-aac-devel)"
 depends="ffplay6>=${version}_${revision}"
-short_desc="Decoding, encoding and streaming software"
-maintainer="Orphaned <orphan@voidlinux.org>"
+short_desc="Decoding, encoding and streaming software - modifed by zveihander for aarch64-musl (asahi)"
+maintainer="Evan Alvarez <lwq7e50ygv8f1w@tuta.com>"
 license="GPL-3.0-or-later"
 homepage="https://www.ffmpeg.org"
 changelog="https://raw.githubusercontent.com/FFmpeg/FFmpeg/master/Changelog"
 distfiles="https://www.ffmpeg.org/releases/ffmpeg-${version}.tar.xz"
 checksum=bc5f1e4a4d283a6492354684ee1124129c52293bcfc6a9169193539fbece3487
 
-build_options="vaapi vdpau fdk_aac nvcodec libvpl"
+build_options="vaapi fdk_aac"
 desc_option_sofa="Enable support for AES SOFA"
 
 case "$XBPS_TARGET_MACHINE" in
@@ -57,6 +56,9 @@ post_patch() {
 }
 
 do_configure() {
+    _args="--arch=aarch64 --cpu=apple-m1 --enable-neon --enable-asm --enable-thumb"
+  	_args+=" --disable-xlib --disable-libxcb --disable-libxcb-shm --disable-libxcb-xfixes"
+
 	# Fix gcc on x86_64-musl only
 	if [ "$XBPS_TARGET_MACHINE" = "x86_64-musl" ]; then
 		vsed -i configure -e "s;_cflags_speed='-O3';_cflags_speed='-O2';"
@@ -87,25 +89,23 @@ do_configure() {
 		--enable-libcdio --enable-version3 --enable-runtime-cpudetect \
 		--enable-libmp3lame --enable-libvorbis --enable-libxvid \
 		--enable-libx264 --enable-libvpx --enable-libtheora \
-		--enable-shared --enable-static --enable-libxcb \
-		--enable-libpulse --enable-libfreetype --enable-libopenmpt \
-		--enable-libspeex --enable-libcelt --enable-libass \
-		--enable-libopus --enable-librtmp --enable-libjack \
+		--enable-shared --enable-static \
+		--enable-libpulse --enable-libfreetype \
+		--enable-libass \
+		--enable-libopus \
 		--disable-libopencore_amrnb --disable-libopencore_amrwb \
 		--disable-libopenjpeg --enable-libbluray --enable-libsoxr \
-		--enable-postproc --enable-opencl --enable-libvmaf ${_args} \
+		--enable-postproc --enable-opencl ${_args} \
 		--enable-libx265 --enable-libv4l2 --enable-libaom \
-		--enable-libbs2b --enable-libvidstab --enable-libdav1d \
-		--enable-libsrt --enable-librist --enable-libwebp \
+		--enable-libdav1d \
+		--enable-libwebp \
 		--enable-vulkan --enable-libdrm --enable-libsvtav1 \
 		--enable-libfreetype --enable-libharfbuzz --enable-libfontconfig \
 		$(vopt_if fdk_aac '--enable-nonfree --enable-libfdk-aac') \
-		$(vopt_enable vaapi) $(vopt_enable vdpau) \
+		$(vopt_enable vaapi) \
 		$(vopt_enable zimg libzimg) \
 		$(vopt_enable sofa libmysofa) \
 		$(vopt_enable libvpl libvpl) \
-		$(vopt_enable nvcodec nvenc) \
-		$(vopt_enable nvcodec nvdec)
 }
 
 do_build() {
