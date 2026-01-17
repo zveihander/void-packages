@@ -3,25 +3,24 @@ pkgname=girara
 version=0.4.5
 revision=1
 build_style=meson
-hostmakedepends="pkg-config intltool doxygen glib-devel"
-makedepends="gtk+3-devel libglib-devel json-glib-devel"
-checkdepends="check-devel xvfb-run"
-short_desc="Library implementing a user interface that focuses on minimalism"
-maintainer="lemmi <lemmi@nerd2nerd.org>"
+configure_args="-Djson=disabled -Dtests=disabled"
+hostmakedepends="pkg-config glib-devel"
+makedepends="gtk+3-devel libglib-devel"
+short_desc="Library implementing a user interface that focuses on minimalism - modified by zveihander for aarch64-musl (asahi)"
+maintainer="Evan Alvarez <lwq7e50ygv8f1w@tuta.com>"
 license="Zlib"
 homepage="https://pwmt.org/projects/girara/"
 changelog="https://pwmt.org/projects/girara/changelog/${version}/index.html"
 distfiles="https://pwmt.org/projects/girara/download/girara-${version}.tar.xz"
 checksum=6b7f7993f82796854d5036572b879ffaaf7e0b619d12abdb318ce14757bdda91
-make_check_pre="xvfb-run"
 
 post_install() {
 	vlicense LICENSE
 }
 
 girara-devel_package() {
-	depends="${sourcepkg}>=${version}_${revision} gtk+3-devel json-c-devel
-	 libglib-devel pango-devel $(vopt_if notify libnotify-devel) json-glib-devel"
+	depends="${sourcepkg}>=${version}_${revision} gtk+3-devel
+	 libglib-devel"
 	short_desc+=" - development files"
 	pkg_install() {
 		vmove usr/include

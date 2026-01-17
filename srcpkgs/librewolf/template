@@ -20,7 +20,7 @@ hostmakedepends="unzip zip pkg-config perl python3 yasm rust
  tar xz $(vopt_if pgo 'dbus mesa-dri vulkan-loader pciutils')
  $(vopt_if wasi wasi-sdk)"
 makedepends="nss-devel libjpeg-turbo-devel gtk+3-devel
- pixman-devel libevent-devel libnotify-devel libvpx-devel libwebp-devel libsodium-devel
+ pixman-devel libevent-devel libnotify-devel libvpx-devel libwebp-devel alsa-lib-devel pulseaudio-devel
  rust-std freetype-devel pipewire-devel libicu78-devel $(vopt_if wasi wasi-sdk) $(vopt_if dbus dbus-devel)"
 depends="nss>=3.72 nspr>=4.32 desktop-file-utils hicolor-icon-theme pciutils"
 
@@ -76,12 +76,12 @@ do_build() {
     export SCCACHE_DIR="${XBPS_BUILDDIR}/sccache"
     export SCCACHE_CACHE_SIZE="20G"
 	export AS="${CC}"
-	export CFLAGS="-O3 -mcpu=native -fno-plt -fstack-protector-strong -mbranch-protection=standard -D_FORTIFY_SOURCE=3 -pipe"
-	export CXXFLAGS="-O3 -mcpu=native -fno-plt -fstack-protector-strong -mbranch-protection=standard -D_FORTIFY_SOURCE=3 -pipe"
+	export CFLAGS="-O2 -mcpu=native -fno-plt -fstack-protector-strong -mbranch-protection=standard -D_FORTIFY_SOURCE=3 -pipe"
+	export CXXFLAGS="-O2 -mcpu=native -fno-plt -fstack-protector-strong -mbranch-protection=standard -D_FORTIFY_SOURCE=3 -pipe"
 	unset HOST_CFLAGS
 	unset HOST_CXXFLAGS
    	export LDFLAGS="-Wl,-O2 -Wl,-rpath=/usr/lib/librewolf -Wl,--as-needed -Wl,-z,now -Wl,-z,relro -Wl,--gc-sections"
-    export RUSTFLAGS="-C target-cpu=native -C link-arg=-Wl,-z,relro -C opt-level=3 -C link-arg=-Wl,-z,now"
+    export RUSTFLAGS="-C target-cpu=native -C link-arg=-Wl,-z,relro -C opt-level=2 -C link-arg=-Wl,-z,now"
 	# export LDFLAGS+="-Wl,--threads=${XBPS_MAKEJOBS}"
 
 	if [ "$build_option_clang" ]; then

@@ -3,14 +3,12 @@ pkgname=zathura
 version=0.5.13
 revision=1
 build_style=meson
-configure_args="-Dsynctex=enabled"
-hostmakedepends="pkg-config gettext python3-Sphinx desktop-file-utils
- appstream-glib glib-devel librsvg-utils"
+configure_args="-Dsynctex=disabled -Dtests=disabled"
+hostmakedepends="pkg-config gettext python3-Sphinx desktop-file-utils appstream-glib glib-devel librsvg-utils"
 makedepends="girara-devel sqlite-devel file-devel zlib-devel libseccomp-devel
- libglib-devel texlive-devel"
-checkdepends="AppStream gettext-devel check-devel xvfb-run"
-short_desc="Highly customizable and functional document viewer"
-maintainer="lemmi <lemmi@nerd2nerd.org>"
+ libglib-devel"
+short_desc="Highly customizable and functional document viewer - modified by zveihander for aarch64-musl (asahi)"
+maintainer="Evan Alvarez <lwq7e50ygv8f1w@tuta.com>"
 license="Zlib"
 homepage="https://pwmt.org/projects/zathura/"
 changelog="https://pwmt.org/projects/zathura/changelog/${version}/index.html"
@@ -29,7 +27,7 @@ if [ "$XBPS_TARGET_LIBC" = musl ]; then
 fi
 
 post_install() {
-	vlicense LICENSE
+  vlicense LICENSE
 }
 
 zathura-devel_package() {
